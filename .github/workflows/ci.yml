@@ -35,7 +35,7 @@ jobs:
             DIRS=$(git diff --name-only main ./images | xargs dirname | sort | uniq)
             JSON=$(jq -n -c '$ARGS.positional' --args "${DIRS}")
           else
-            DIRS=$(git diff --name-only ./images | xargs dirname | sort | uniq)
+            DIRS=$(find . -type f -name "Dockerfile" -exec dirname {} \; | sort | uniq)
             JSON=$(jq -n -c '$ARGS.positional' --args "${DIRS}")
           fi
           echo "dirs=${JSON}" | tee -a "${GITHUB_OUTPUT}"
