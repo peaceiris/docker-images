@@ -19,8 +19,11 @@ RUN cmake .. -DROBOTS_BUILD_TESTS=ON
 RUN make
 
 FROM alpine:3.18
-COPY --from=builder /usr/local/robotstxt/c-build /usr/local/robotstxt/c-build
-ENV PATH "${PATH}:/usr/local/robotstxt/c-build"
+# hadolint ignore=DL3018
+RUN apk add --update-cache --no-cache \
+    libstdc++
+COPY --from=builder /usr/local/robotstxt/c-build/librobots.so /usr/local/robotstxt/c-build/librobots.so
+COPY --from=builder /usr/local/robotstxt/c-build/robots /usr/local/robotstxt/c-build/robots
 ENTRYPOINT ["/usr/local/robotstxt/c-build/robots"]
 
 # https://github.com/opencontainers/image-spec/blob/main/annotations.md
