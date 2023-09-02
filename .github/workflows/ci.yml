@@ -76,13 +76,11 @@ jobs:
         run: make build
         if: ${{ github.event_name != 'pull_request' }}
 
-      - run: make label
-
-      - run: make login-ghcr
+      - run: make login
         if: github.event_name != 'pull_request'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GHCR_LOGIN_NAME: ${{ secrets.GHCR_LOGIN_NAME }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - run: make push
         if: github.event_name != 'pull_request'

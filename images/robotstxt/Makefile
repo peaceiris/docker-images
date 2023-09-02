@@ -11,10 +11,18 @@ DOCKER_PLATFORM ?= linux/arm64
 GITHUB_REF_NAME ?= local
 DOCKER_SCOPE := robotstxt-${GITHUB_REF_NAME}
 PKG_NAME := ${DOCKER_BASE_NAME}:${DOCKER_TAG}
+HUB_NAME := ${DOCKER_HUB_BASE_NAME}:${DOCKER_TAG}
+
+.PHONY: login-dockerhub
+login-dockerhub:
+	echo "${DOCKER_HUB_TOKEN}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
 .PHONY: login-ghcr
 login-ghcr:
 	echo "${GITHUB_TOKEN}" | docker login ghcr.io -u "${DOCKER_USERNAME}" --password-stdin
+
+.PHONY: login
+login: login-dockerhub login-ghcr
 
 .PHONY: setup-buildx
 setup-buildx:
@@ -30,12 +38,11 @@ build: setup-buildx
 		--output "type=docker" \
 		--cache-from "type=gha,scope=${DOCKER_SCOPE}" \
 		--cache-to "type=gha,mode=max,scope=${DOCKER_SCOPE}"
-	docker images
-
-.PHONY: label
-label:
 	docker image inspect "${PKG_NAME}" --format='{{json .Config.Labels}}' | jq
+	docker tag "${PKG_NAME}" "${HUB_NAME}"
+	docker images
 
 .PHONY: push
 push:
 	docker push "${PKG_NAME}"
+	docker push "${HUB_NAME}"
