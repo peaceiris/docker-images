@@ -1,12 +1,15 @@
-FROM debian:12-slim AS builder
+FROM alpine:3.18 AS builder
 
 WORKDIR /usr/local
-# hadolint ignore=DL3008
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# hadolint ignore=DL3018
+RUN apk add --update-cache --no-cache \
     ca-certificates \
-    build-essential \
-    git \
-    cmake
+    alpine-sdk \
+    linux-headers \
+    make \
+    cmake \
+    git
+# hadolint ignore=DL3059
 RUN git clone https://github.com/google/robotstxt.git
 WORKDIR /usr/local/robotstxt
 RUN git checkout 455b1583103d13ad88fe526bc058d6b9f3309215
@@ -15,7 +18,7 @@ RUN cmake .. -DROBOTS_BUILD_TESTS=ON
 # hadolint ignore=DL3059
 RUN make
 
-FROM debian:12-slim
+FROM alpine:3.18
 COPY --from=builder /usr/local/robotstxt/c-build /usr/local/robotstxt/c-build
 ENV PATH "${PATH}:/usr/local/robotstxt/c-build"
 ENTRYPOINT ["/usr/local/robotstxt/c-build/robots"]
