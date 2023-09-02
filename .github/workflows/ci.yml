@@ -1,0 +1,88 @@
+name: Docker
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+  pull_request:
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  hadolint:
+    uses: peaceiris/workflows/.github/workflows/hadolint.yml@main
+
+  build_matrix:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 1
+    permissions: {}
+    outputs:
+      dirs: ${{ steps.build_matrix.outputs.dirs }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+          ref: main
+      - name: Get target dirs
+        id: build_matrix
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ "${{ github.event_name == 'pull_request' }}" = "true" ]]; then
+            gh pr checkout "$(jq -r '.pull_request.number' "${GITHUB_EVENT_PATH}")"
+            DIRS=$(git diff --name-only main ./images | xargs dirname | sort | uniq)
+            JSON=$(jq -n -c '$ARGS.positional' --args "${DIRS}")
+          else
+            DIRS=$(git diff --name-only ./images | xargs dirname | sort | uniq)
+            JSON=$(jq -n -c '$ARGS.positional' --args "${DIRS}")
+          fi
+          echo "dirs=${JSON}" | tee -a "${GITHUB_OUTPUT}"
+
+  build_and_push:
+    needs: build_matrix
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      actions: write
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        dir: ${{ fromJson(needs.build_matrix.outputs.dirs) }}
+        platform:
+          - "linux/amd64"
+          - "linux/arm64"
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
+    env:
+      DOCKER_PLATFORM: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: peaceiris/actions-export-envs@v1.1.0
+        id: envs
+
+      - name: Build with cache
+        run: make build
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          ACTIONS_RUNTIME_TOKEN: ${{ steps.envs.outputs.ACTIONS_RUNTIME_TOKEN }}
+          ACTIONS_CACHE_URL: ${{ steps.envs.outputs.ACTIONS_CACHE_URL }}
+
+      - name: Build without cache
+        run: make build
+        if: ${{ github.event_name != 'pull_request' }}
+
+      - run: make label
+
+      - run: make login-ghcr
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_LOGIN_NAME: ${{ secrets.GHCR_LOGIN_NAME }}
+
+      - run: make push
+        if: github.event_name != 'pull_request'
