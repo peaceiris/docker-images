@@ -31,5 +31,5 @@ LABEL org.opencontainers.image.authors="peaceiris (Shohei Ueda)"
 LABEL org.opencontainers.image.url="https://github.com/peaceiris/docker-images"
 LABEL org.opencontainers.image.documentation="https://github.com/peaceiris/docker-images/blob/main/images/robotstxt/README.md"
 LABEL org.opencontainers.image.source="https://github.com/peaceiris/docker-images/blob/main/images/robotstxt/Dockerfile"
-LABEL org.opencontainers.image.description="A Docker image includes a binary of google/robotstxt"
+LABEL org.opencontainers.image.description="An Alpine Linux based Docker image includes a binary of google/robotstxt"
 LABEL org.opencontainers.image.licenses=MIT
