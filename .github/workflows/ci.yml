@@ -51,19 +51,20 @@ jobs:
     strategy:
       matrix:
         dir: ${{ fromJson(needs.build_matrix.outputs.dirs) }}
-        platform:
-          - "linux/amd64"
-          - "linux/arm64"
     defaults:
       run:
         working-directory: ${{ matrix.dir }}
-    env:
-      DOCKER_PLATFORM: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v3
 
       - uses: peaceiris/actions-export-envs@v1.1.0
         id: envs
+
+      - run: make login
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Build with cache
         run: make build
@@ -75,12 +76,5 @@ jobs:
       - name: Build without cache
         run: make build
         if: ${{ github.event_name != 'pull_request' }}
-
-      - run: make login
-        if: github.event_name != 'pull_request'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-
-      - run: make push
-        if: github.event_name != 'pull_request'
+          DOCKER_PLATFORM: linux/amd64,linux/arm64
