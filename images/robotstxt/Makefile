@@ -1,9 +1,9 @@
 DOCKER_CLI_EXPERIMENTAL := enabled
 DOCKER_BUILDKIT := 1
 
-USERNAME := peaceiris
+DOCKER_USERNAME ?= peaceiris
 DOCKER_IMAGE_NAME := docker-images/robotstxt
-DOCKER_HUB_BASE_NAME := ${USERNAME}/${DOCKER_IMAGE_NAME}
+DOCKER_HUB_BASE_NAME := ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}
 DOCKER_BASE_NAME := ghcr.io/${DOCKER_HUB_BASE_NAME}
 DOCKER_VERSION := 0.1.0
 DOCKER_TAG := v${DOCKER_VERSION}
@@ -14,7 +14,7 @@ PKG_NAME := ${DOCKER_BASE_NAME}:${DOCKER_TAG}
 
 .PHONY: login-ghcr
 login-ghcr:
-	echo "${GITHUB_TOKEN}" | docker login ghcr.io -u "${GHCR_LOGIN_NAME}" --password-stdin
+	echo "${GITHUB_TOKEN}" | docker login ghcr.io -u "${DOCKER_USERNAME}" --password-stdin
 
 .PHONY: setup-buildx
 setup-buildx:
