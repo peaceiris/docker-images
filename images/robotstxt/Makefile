@@ -43,5 +43,7 @@ build: setup-buildx
 		--output "type=${DOCKER_OUTPUT_TYPE}" \
 		--cache-from "type=gha,scope=${DOCKER_SCOPE}" \
 		--cache-to "type=gha,mode=max,scope=${DOCKER_SCOPE}"
+ifndef CI
 	docker image inspect "${PKG_NAME}" | jq
 	docker images
+endif
