@@ -77,4 +77,4 @@ jobs:
         run: make build
         if: ${{ github.event_name != 'pull_request' }}
         env:
-          DOCKER_PLATFORM: linux/amd64,linux/arm64
+          DOCKER_MULTI_PLATFORM: true
