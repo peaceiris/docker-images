@@ -47,3 +47,7 @@ ifndef CI
 	docker image inspect "${PKG_NAME}" | jq
 	docker images
 endif
+
+.PHONY: test
+test:
+	docker run --rm "${HUB_NAME}" -h

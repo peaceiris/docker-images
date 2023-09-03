@@ -24,7 +24,8 @@ RUN apk add --update-cache --no-cache \
     libstdc++
 COPY --from=builder /usr/local/robotstxt/c-build/librobots.so /usr/local/robotstxt/c-build/librobots.so
 COPY --from=builder /usr/local/robotstxt/c-build/robots /usr/local/robotstxt/c-build/robots
-ENTRYPOINT ["/usr/local/robotstxt/c-build/robots"]
+ENV PATH="/usr/local/robotstxt/c-build:${PATH}"
+ENTRYPOINT ["robots"]
 
 # https://github.com/opencontainers/image-spec/blob/main/annotations.md
 LABEL org.opencontainers.image.authors="peaceiris (Shohei Ueda)"
