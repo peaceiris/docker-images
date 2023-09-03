@@ -35,6 +35,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: Validate
         run: |
+          robots ./assets/robots-production.txt Googlebot https://peaceiris.com/
+          robots ./assets/robots-production.txt GPTBot https://peaceiris.com/ || true
+
           curl -s https://peaceiris.com/robots.txt --output robots.txt
           robots robots.txt Googlebot https://peaceiris.com/
           robots robots.txt GPTBot https://peaceiris.com/ || true
