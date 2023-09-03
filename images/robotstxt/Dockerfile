@@ -21,7 +21,8 @@ RUN make
 FROM alpine:3.18
 # hadolint ignore=DL3018
 RUN apk add --update-cache --no-cache \
-    libstdc++
+    libstdc++ \
+    curl
 COPY --from=builder /usr/local/robotstxt/c-build/librobots.so /usr/local/robotstxt/c-build/librobots.so
 COPY --from=builder /usr/local/robotstxt/c-build/robots /usr/local/robotstxt/c-build/robots
 ENV PATH="/usr/local/robotstxt/c-build:${PATH}"
