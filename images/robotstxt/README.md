@@ -32,11 +32,6 @@ name: robots.txt
 on:
   workflow_dispatch:
   pull_request:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/robotstxt.yml"
-      - "assets/robots-*.txt"
 
 jobs:
   validate:
