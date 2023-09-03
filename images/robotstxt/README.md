@@ -17,11 +17,19 @@ user-agent 'Googlebot' with URI 'https://peaceiris.com/': ALLOWED
 
 ## GitHub Actions
 
+.github/workflows/robotstxt.yml
+
 ```yaml
 name: robots.txt
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/robotstxt.yml"
+      - "assets/robots-*.txt"
 
 jobs:
   validate:
