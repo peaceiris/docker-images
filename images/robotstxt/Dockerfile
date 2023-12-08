@@ -1,4 +1,4 @@
-FROM alpine:3.18 AS builder
+FROM alpine:3.19 AS builder
 
 WORKDIR /usr/local
 # hadolint ignore=DL3018
@@ -18,7 +18,7 @@ RUN cmake .. -DROBOTS_BUILD_TESTS=ON
 # hadolint ignore=DL3059
 RUN make
 
-FROM alpine:3.18
+FROM alpine:3.19
 # hadolint ignore=DL3018
 RUN apk add --update-cache --no-cache \
     libstdc++ \
