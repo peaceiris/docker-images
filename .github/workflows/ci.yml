@@ -21,7 +21,7 @@ jobs:
     outputs:
       dirs: ${{ steps.build_matrix.outputs.dirs }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
           ref: main
@@ -60,7 +60,7 @@ jobs:
       run:
         working-directory: ${{ matrix.dir }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: peaceiris/actions-export-envs@v1.1.0
         id: envs
