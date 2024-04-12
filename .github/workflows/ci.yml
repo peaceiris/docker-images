@@ -33,7 +33,11 @@ jobs:
           if [[ "${{ github.event_name == 'pull_request' }}" = "true" ]]; then
             gh pr checkout "$(jq -r '.pull_request.number' "${GITHUB_EVENT_PATH}")"
             DIRS=$(git diff --name-only main ./images | xargs dirname | sort | uniq)
-            JSON=$(jq -n -c '$ARGS.positional' --args "${DIRS}")
+            if [[ -z "${DIRS}" ]]; then
+              JSON="[]"
+            else
+              JSON=$(jq -n -c '$ARGS.positional' --args "${DIRS}")
+            fi
           else
             DIRS=$(find . -type f -name "Dockerfile" -exec dirname {} \; | sort | uniq)
             JSON=$(jq -n -c '$ARGS.positional' --args "${DIRS}")
@@ -42,6 +46,7 @@ jobs:
 
   build_and_push:
     needs: build_matrix
+    if: needs.build_matrix.outputs.dirs != '[]'
     runs-on: ubuntu-22.04
     timeout-minutes: 15
     permissions:
