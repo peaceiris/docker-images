@@ -28,13 +28,8 @@ login-ghcr:
 .PHONY: login
 login: login-dockerhub login-ghcr
 
-.PHONY: setup-buildx
-setup-buildx:
-	docker buildx create --use --driver docker-container
-	docker version
-
 .PHONY: build
-build: setup-buildx
+build:
 	docker buildx build . \
 		--tag "${PKG_NAME}" \
 		--tag "${HUB_NAME}" \
