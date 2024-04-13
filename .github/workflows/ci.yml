@@ -10,6 +10,10 @@ on:
     paths-ignore:
       - "**.md"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   hadolint:
     uses: peaceiris/workflows/.github/workflows/hadolint.yml@main
@@ -54,6 +58,7 @@ jobs:
       contents: read
       packages: write
     strategy:
+      fail-fast: false
       matrix:
         dir: ${{ fromJson(needs.build_matrix.outputs.dirs) }}
     defaults:
