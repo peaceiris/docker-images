@@ -14,7 +14,7 @@ GITHUB_REF_NAME ?= local
 DOCKER_SCOPE := gcloudpsql-${GITHUB_REF_NAME}
 DOCKER_OUTPUT_TYPE ?= docker
 ifdef DOCKER_MULTI_PLATFORM
-	DOCKER_PLATFORM := --platform linux/amd64,linux/arm64
+	DOCKER_PLATFORM := --platform linux/amd64
 	DOCKER_OUTPUT_TYPE := registry
 endif
 PKG_NAME := ${DOCKER_BASE_NAME}:${DOCKER_TAG}
