@@ -48,7 +48,7 @@ jobs:
     needs: build_matrix
     if: needs.build_matrix.outputs.dirs != '[]'
     runs-on: ubuntu-22.04
-    timeout-minutes: 15
+    timeout-minutes: 30
     permissions:
       actions: write
       contents: read
@@ -65,21 +65,21 @@ jobs:
       - uses: peaceiris/actions-export-envs@v1.1.0
         id: envs
 
+      - name: Build with cache
+        run: make build
+        if: github.event_name == 'pull_request'
+        env:
+          ACTIONS_RUNTIME_TOKEN: ${{ steps.envs.outputs.ACTIONS_RUNTIME_TOKEN }}
+          ACTIONS_CACHE_URL: ${{ steps.envs.outputs.ACTIONS_CACHE_URL }}
+
       - run: make login
         if: github.event_name != 'pull_request'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Build with cache
-        run: make build
-        if: ${{ github.event_name == 'pull_request' }}
-        env:
-          ACTIONS_RUNTIME_TOKEN: ${{ steps.envs.outputs.ACTIONS_RUNTIME_TOKEN }}
-          ACTIONS_CACHE_URL: ${{ steps.envs.outputs.ACTIONS_CACHE_URL }}
-
       - name: Build without cache
         run: make build
-        if: ${{ github.event_name != 'pull_request' }}
+        if: github.event_name != 'pull_request'
         env:
           DOCKER_MULTI_PLATFORM: true
