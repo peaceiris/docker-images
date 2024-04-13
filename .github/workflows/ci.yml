@@ -48,7 +48,7 @@ jobs:
     needs: build_matrix
     if: needs.build_matrix.outputs.dirs != '[]'
     runs-on: ubuntu-22.04
-    timeout-minutes: 30
+    timeout-minutes: 15
     permissions:
       actions: write
       contents: read
