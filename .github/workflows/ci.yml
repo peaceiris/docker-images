@@ -36,11 +36,11 @@ jobs:
         run: |
           if [[ "${{ github.event_name == 'pull_request' }}" = "true" ]]; then
             gh pr checkout "$(jq -r '.pull_request.number' "${GITHUB_EVENT_PATH}")"
-            DIRS=$(git diff --name-only main ./images | xargs dirname | sort | uniq)
+            DIRS=($(git diff --name-only main ./images | xargs dirname | sort | uniq))
             if [[ -z "${DIRS}" ]]; then
               JSON="[]"
             else
-              JSON=$(jq -n -c '$ARGS.positional' --args "${DIRS}")
+              JSON=$(jq -n -c '$ARGS.positional' --args "${DIRS[@]}")
             fi
           else
             DIRS=($(find . -type f -name "Dockerfile" -exec dirname {} \; | sort | uniq))

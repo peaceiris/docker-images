@@ -34,7 +34,12 @@ setup-buildx:
 	docker version
 
 .PHONY: build
-build: setup-buildx
+build:
+ifeq (${CI}, true)
+	$(MAKE) setup-buildx
+	docker version
+	docker buildx inspect --bootstrap
+endif
 	docker buildx build . \
 		--tag "${PKG_NAME}" \
 		--tag "${HUB_NAME}" \
@@ -43,7 +48,7 @@ build: setup-buildx
 		--output "type=${DOCKER_OUTPUT_TYPE}" \
 		--cache-from "type=gha,scope=${DOCKER_SCOPE}" \
 		--cache-to "type=gha,mode=max,scope=${DOCKER_SCOPE}"
-ifndef CI
+ifeq (CI, true)
 	docker image inspect "${PKG_NAME}" | jq
 	docker images
 endif
