@@ -5,11 +5,11 @@ on:
     branches:
       - main
     paths:
-      - "Dockerfile"
+      - "**/Dockerfile"
       - ".github/workflows/hadolint.yml"
   pull_request:
     paths:
-      - "Dockerfile"
+      - "**/Dockerfile"
       - ".github/workflows/hadolint.yml"
 
 concurrency:
