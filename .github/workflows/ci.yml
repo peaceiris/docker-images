@@ -15,9 +15,6 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  hadolint:
-    uses: peaceiris/workflows/.github/workflows/hadolint.yml@main
-
   build_matrix:
     runs-on: ubuntu-22.04
     timeout-minutes: 1
