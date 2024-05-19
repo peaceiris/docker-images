@@ -54,4 +54,4 @@ endif
 
 .PHONY: test
 test:
-	docker run --rm --entrypoint bash "${HUB_NAME}" -c "gcloud --version && psql --version"
+	docker run --rm --entrypoint bash "${HUB_NAME}" -c "brew doctor"

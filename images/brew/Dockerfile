@@ -2,6 +2,14 @@ FROM ubuntu:24.04
 
 # cf. https://github.com/Homebrew/brew/blob/91b58f0cc49c51e4b7fdbae80aff8c3820e4cd65/Dockerfile
 
+# https://github.com/opencontainers/image-spec/blob/main/annotations.md
+LABEL org.opencontainers.image.authors="peaceiris (Shohei Ueda)"
+LABEL org.opencontainers.image.url="https://github.com/peaceiris/docker-images"
+LABEL org.opencontainers.image.documentation="https://github.com/peaceiris/docker-images/blob/main/images/brew/README.md"
+LABEL org.opencontainers.image.source="https://github.com/peaceiris/docker-images/blob/main/images/brew/Dockerfile"
+LABEL org.opencontainers.image.description="An Ubuntu-based Docker image includes Homebrew/brew"
+LABEL org.opencontainers.image.licenses=MIT
+
 SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
