@@ -42,7 +42,7 @@ jobs:
     container:
       image: ghcr.io/peaceiris/robotstxt:v1.0.0
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Validate
         run: |
           # Validate a robots.txt on a repository
