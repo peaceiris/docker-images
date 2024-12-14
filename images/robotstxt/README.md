@@ -35,7 +35,7 @@ on:
 
 jobs:
   validate:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 3
     permissions:
       contents: read
