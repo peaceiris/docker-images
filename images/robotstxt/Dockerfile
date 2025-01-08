@@ -1,4 +1,4 @@
-FROM alpine:3.21.1 AS builder
+FROM alpine:3.21.2 AS builder
 
 # https://github.com/opencontainers/image-spec/blob/main/annotations.md
 LABEL org.opencontainers.image.authors="peaceiris (Shohei Ueda)"
@@ -25,7 +25,7 @@ RUN cmake -S . -B c-build && \
     cmake --build c-build && \
     cmake --install c-build
 
-FROM alpine:3.21.1
+FROM alpine:3.21.2
 # hadolint ignore=DL3018
 RUN apk add --update-cache --no-cache \
     libstdc++ \
