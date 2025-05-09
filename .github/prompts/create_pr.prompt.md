@@ -1,6 +1,7 @@
 ---
 mode: 'agent'
 description: 'Create a new pull request'
+tools: ['git_status', 'git_create_branch', 'git_checkout', 'git_add', 'git_commit']
 ---
 
 ## Steps to Create a Pull Request
@@ -18,7 +19,7 @@ Follow the steps below to create a pull request.
 7. Create a pull request.
     - Use the commit message as the title.
     - Use the following template for the body. Leave the comments as they are.
-    - Example command:
+    - If there are no references, you may omit the References section.
 
 ```sh
 gh pr create --title "docs: update copilot instructions" --body "$(cat <<'EOF'
@@ -28,7 +29,8 @@ gh pr create --title "docs: update copilot instructions" --body "$(cat <<'EOF'
 
 ## References
 
-(List any related links for this pull-request here)
+(List any related links for this pull-request here.)
+
 EOF
 )"
 ```
