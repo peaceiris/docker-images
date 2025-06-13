@@ -14,4 +14,4 @@ on:
 
 jobs:
   lint:
-    uses: peaceiris/workflows/.github/workflows/hadolint.yml@v0.21.1
+    uses: peaceiris/workflows/.github/workflows/hadolint.yml@v0.21.2
