@@ -48,7 +48,7 @@ jobs:
           fi
           echo "dirs=${JSON}" | tee -a "${GITHUB_OUTPUT}"
 
-  build_and_push:
+  docker:
     needs: build_matrix
     if: needs.build_matrix.outputs.dirs != '[]'
     runs-on: ubuntu-24.04
