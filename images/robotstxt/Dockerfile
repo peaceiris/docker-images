@@ -1,4 +1,4 @@
-FROM alpine:3.21.3 AS builder
+FROM alpine:3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c AS builder
 
 # https://github.com/opencontainers/image-spec/blob/main/annotations.md
 LABEL org.opencontainers.image.authors="peaceiris (Shohei Ueda)"
@@ -20,12 +20,12 @@ WORKDIR /usr/local
 # hadolint ignore=DL3059
 RUN git clone https://github.com/google/robotstxt.git
 WORKDIR /usr/local/robotstxt
-RUN git checkout 455b1583103d13ad88fe526bc058d6b9f3309215
+RUN git checkout v1.0.0
 RUN cmake -S . -B c-build && \
     cmake --build c-build && \
     cmake --install c-build
 
-FROM alpine:3.21.3
+FROM alpine:3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
 # hadolint ignore=DL3018
 RUN apk add --update-cache --no-cache \
     libstdc++ \
