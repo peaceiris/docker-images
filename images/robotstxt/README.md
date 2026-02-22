@@ -16,9 +16,12 @@ An Alpine Linux-based Docker image includes a binary of google/robotstxt.
 
 ## Docker
 
-```console
-$ wget https://peaceiris.com/robots.txt
-$ docker run --rm -v ./robots.txt:/root/robots.txt peaceiris/robotstxt:v1.0.0 /root/robots.txt Googlebot https://peaceiris.com/
+```sh
+wget "https://peaceiris.com/robots.txt"
+docker run --rm -v "./robots.txt:/root/robots.txt" "peaceiris/robotstxt:v1.0.0" /root/robots.txt Googlebot https://peaceiris.com/
+```
+
+```txt
 user-agent 'Googlebot' with URI 'https://peaceiris.com/': ALLOWED
 ```
 
