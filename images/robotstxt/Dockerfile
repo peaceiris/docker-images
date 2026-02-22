@@ -20,7 +20,8 @@ WORKDIR /usr/local
 # hadolint ignore=DL3059
 RUN git clone https://github.com/google/robotstxt.git
 WORKDIR /usr/local/robotstxt
-RUN git checkout v1.0.0
+# v1.0.0
+RUN git checkout a7a82530abedfda75f6a81396666700fc11e89fd
 RUN cmake -S . -B c-build && \
     cmake --build c-build && \
     cmake --install c-build
