@@ -67,7 +67,7 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-      - uses: peaceiris/actions-export-envs@v1.1.0
+      - uses: peaceiris/actions-export-envs@501a951259fc5585b719007d218ca1295a4bf037
         id: envs
 
       - name: Build with cache
@@ -76,6 +76,8 @@ jobs:
         env:
           ACTIONS_RUNTIME_TOKEN: ${{ steps.envs.outputs.ACTIONS_RUNTIME_TOKEN }}
           ACTIONS_CACHE_URL: ${{ steps.envs.outputs.ACTIONS_CACHE_URL }}
+          ACTIONS_RESULTS_URL: ${{ steps.envs.outputs.ACTIONS_RESULTS_URL }}
+          ACTIONS_CACHE_SERVICE_V2: ${{ steps.envs.outputs.ACTIONS_CACHE_SERVICE_V2 }}
 
       - run: make login
         if: github.event_name != 'pull_request'
