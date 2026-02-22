@@ -70,23 +70,16 @@ jobs:
       - uses: peaceiris/actions-export-envs@501a951259fc5585b719007d218ca1295a4bf037
         id: envs
 
-      - name: Build with cache
-        run: make build
-        if: github.event_name == 'pull_request'
-        env:
-          ACTIONS_RUNTIME_TOKEN: ${{ steps.envs.outputs.ACTIONS_RUNTIME_TOKEN }}
-          ACTIONS_CACHE_URL: ${{ steps.envs.outputs.ACTIONS_CACHE_URL }}
-          ACTIONS_RESULTS_URL: ${{ steps.envs.outputs.ACTIONS_RESULTS_URL }}
-          ACTIONS_CACHE_SERVICE_V2: ${{ steps.envs.outputs.ACTIONS_CACHE_SERVICE_V2 }}
-
       - run: make login
         if: github.event_name != 'pull_request'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Build without cache
-        run: make build
-        if: github.event_name != 'pull_request'
+      - run: make build
         env:
-          DOCKER_MULTI_PLATFORM: true
+          DOCKER_MULTI_PLATFORM: ${{ github.event_name != 'pull_request' && 'true' || 'false' }}
+          ACTIONS_RUNTIME_TOKEN: ${{ steps.envs.outputs.ACTIONS_RUNTIME_TOKEN }}
+          ACTIONS_CACHE_URL: ${{ steps.envs.outputs.ACTIONS_CACHE_URL }}
+          ACTIONS_RESULTS_URL: ${{ steps.envs.outputs.ACTIONS_RESULTS_URL }}
+          ACTIONS_CACHE_SERVICE_V2: true
