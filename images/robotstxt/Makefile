@@ -10,7 +10,7 @@ DOCKER_TAG := v${DOCKER_VERSION}
 GITHUB_REF_NAME ?= local
 DOCKER_SCOPE := robotstxt-${GITHUB_REF_NAME}
 DOCKER_OUTPUT_TYPE ?= docker
-ifdef DOCKER_MULTI_PLATFORM
+ifeq ($(DOCKER_MULTI_PLATFORM),true)
 	DOCKER_PLATFORM := --platform linux/amd64,linux/arm64
 	DOCKER_OUTPUT_TYPE := registry
 endif
