@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
 # cf. https://github.com/Homebrew/brew/blob/91b58f0cc49c51e4b7fdbae80aff8c3820e4cd65/Dockerfile
 
